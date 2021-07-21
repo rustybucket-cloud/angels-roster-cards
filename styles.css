@@ -12,13 +12,40 @@ body {
 header {
     background-color: #8f0028;
     color: #fff;
+    display: flex;
+    align-items: center;
+    height: 12vh;
 }
 h1 {
     font-family: "Bree Serif", sans-serif;
-    padding: 2vw;
+    padding: 0 2vw;
     margin: 0;
 }
-
+.filter {
+    height: 3rem;
+}
+nav {
+    height: 100%;
+}
+nav ul {
+    list-style-type: none;
+    display: flex;
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+}
+nav li {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 1vw;
+    width: 100%;
+    height: 100%;
+}
+nav li:hover {
+    background-color: #003263;
+}
 /*card styling*/
 #cards {
     display: grid;
@@ -141,7 +168,10 @@ h1 {
       margin: 0;
       padding: 2px;
   }
-.pitcher th, .picther td {
+  table {
+      max-width: 100%;
+  }
+.pitcher-table th, .picther-table td {
     font-size: .7rem;
 }
   @media screen and (max-width: 530px) {
@@ -151,10 +181,18 @@ h1 {
       .card__face--back th, .card__face--back td{
           font-size: .75rem;
       }
-      .pitcher th, .pitcher .td{
+      .pitcher-table th, .pitcher-table .td{
         font-size: .6rem;
       }
   }
+
+  .visible {
+      display: flex;
+  }
+  .hidden {
+      display: none;
+  }
+
   header, main, footer {
       max-width: 64rem;
       margin: 0 auto;

@@ -20,6 +20,7 @@ fetch("https://mlb-data.p.rapidapi.com/json/named.roster_40.bam?team_id='108'", 
 
             const card = document.createElement('div');
             card.classList.add('card');
+            card.id = id;
 
             const front = document.createElement('div');
             front.classList.add('card__face');
@@ -64,6 +65,9 @@ fetch("https://mlb-data.p.rapidapi.com/json/named.roster_40.bam?team_id='108'", 
             const table = document.createElement('table');
             const headTr = document.createElement('tr');
             if (position !== 'P') {//if player is not a pitcher, fill the table head with these headers
+
+                card.setAttribute('data-position', 'position');
+
                 const gTh = document.createElement('th');
                 gTh.textContent = "G";
                 const avgTh = document.createElement('th');
@@ -114,8 +118,8 @@ fetch("https://mlb-data.p.rapidapi.com/json/named.roster_40.bam?team_id='108'", 
                         });
             }
                         else {//create a table for pitchers
-
-                            table.classList.add('pitcher');
+                            card.setAttribute('data-position', 'pitcher');
+                            table.classList.add('pitcher-table');
 
                             const rTh = document.createElement('th');
                             rTh.textContent = "W-L";
@@ -187,3 +191,39 @@ fetch("https://mlb-data.p.rapidapi.com/json/named.roster_40.bam?team_id='108'", 
 }
 document.addEventListener('DOMContentLoaded', getRoster);
 
+function sortBy(filter) {
+    const visibility = {
+        'pitcher': {
+            visible: 'pitcher',
+            hidden: 'position'
+        },
+        'position': {
+            visible: 'position',
+            hidden: 'pitcher'
+        }
+    }
+    if (filter === 'pitcher' || filter === 'position') {
+        const visible = document.querySelectorAll(`[data-position='${visibility[filter].visible}']`);
+        const hidden = document.querySelectorAll(`[data-position='${visibility[filter].hidden}']`);
+        visible.forEach( player => {
+            player.classList.add('visible');
+            player.classList.remove('hidden');
+        });
+        hidden.forEach( player => {
+            player.classList.add('hidden');
+            player.classList.remove('visible');
+        });
+    } 
+    else {
+        const pitchers = document.querySelectorAll(`[data-position='pitcher']`);
+        const position = document.querySelectorAll(`[data-position='position']`);
+        pitchers.forEach( player => {
+            player.classList.add('visible');
+            player.classList.remove('hidden');
+        });
+        position.forEach( player => {
+            player.classList.add('visible');
+            player.classList.remove('hidden');
+        });
+    }
+}
