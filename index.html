@@ -18,13 +18,23 @@
         <h1>Angels 40 Man Roster</h1>
         <nav>
             <ul>
-                <li onclick="sortBy('pitcher')">Pitchers</li>
-                <li onclick="sortBy('position')">Position Players</li>
-                <li onclick="sortBy('all')">All</li>
+                <li onclick="sortBy('pitcher')" class='pitcher-li nav'>Pitchers</li>
+                <li onclick="sortBy('position')" class="position-li nav">Position Players</li>
+                <li onclick="sortBy('all')" class="active all-li nav">All</li>
             </ul>
         </nav>
+        <div class="menu-btn">
+            <div class="menu-btn_burger"></div>
+        </div>
     </header>
     <main>
+        <div class="hamburger-menu closed">
+            <ul>
+                <li onclick="sortBy('pitcher')" class='nav pitcher-li'>Pitchers</li>
+                <li onclick="sortBy('position')" class="nav position-li">Position Players</li>
+                <li onclick="sortBy('all')" class="active nav all-li">All</li>
+            </ul>
+        </div>
         <div id="cards">
         </div>
     </main>

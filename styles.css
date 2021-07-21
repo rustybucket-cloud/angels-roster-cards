@@ -15,6 +15,11 @@ header {
     display: flex;
     align-items: center;
     height: 12vh;
+    position: fixed;
+    width: 100%;
+    z-index: 1;
+    left: 0;
+    right: 0;
 }
 h1 {
     font-family: "Bree Serif", sans-serif;
@@ -46,6 +51,109 @@ nav li {
 nav li:hover {
     background-color: #003263;
 }
+
+/*menu button*/
+.menu-btn {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80px;
+    height: 80px;
+    cursor: pointer;
+    transition: all .5s ease-in-out;
+    justify-self: flex-end;
+}
+.menu-btn_burger {
+    width: 50px;
+    height: 6px;
+    background: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(255,101,47,.2);
+    transition: all .5s ease-in-out;
+}
+.menu-btn_burger::before,
+.menu-btn_burger::after {
+    content: '';
+    position: absolute;
+    width: 50px;
+    height: 6px;
+    background: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(255,101,47,.2);
+    transition: all .5s ease-in-out;
+}
+.menu-btn_burger::before {
+    transform: translateY(-16px);
+}
+.menu-btn_burger::after {
+    transform: translateY(16px);
+}
+
+/*Animation*/
+.menu-btn.open .menu-btn_burger {
+    transform: translateX(-50px);
+    background: transparent;
+    box-shadow: none;
+}
+.menu-btn.open .menu-btn_burger::before {
+    transform: rotate(45deg) translate(35px, -35px);
+}
+.menu-btn.open .menu-btn_burger::after {
+    transform: rotate(-45deg) translate(35px, 35px);   
+}
+.hamburger-menu {
+    position: fixed;
+    top: 12vh;
+    left: 0;
+    width: 100%;
+    height: 40vh; 
+    z-index: 1;
+    background-color: rgba(0,50,99,.7);
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.hamburger-menu ul {
+    list-style-type: none;
+    height: 40vh;
+    padding: 0;
+    margin-top: 10vh;
+}
+.hamburger-menu li {
+    width: 75vw;
+    background-color: #8f0028;
+    color: #fff;
+    padding: 3vh;
+    margin: 1vh;
+}
+li.active {
+    background-color: #003263;
+}
+.closed {
+    display: none;
+    transition: ease-in-out .5s;
+}
+@media screen and (min-width: 701px) {
+    .menu-btn {
+        display: none;
+    }
+}
+@media screen and (max-width: 700px) {
+    nav {
+        display: none;
+    }
+    header {
+        justify-content: space-between;
+    }
+}
+
+main {
+    position: relative;
+    top: 12vh;
+}
+
 /*card styling*/
 #cards {
     display: grid;

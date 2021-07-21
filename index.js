@@ -1,3 +1,4 @@
+//fetch 40 man roster, create cards, fill both sides of the cards, and fetch career stats
 function getRoster() {
 fetch("https://mlb-data.p.rapidapi.com/json/named.roster_40.bam?team_id='108'", {
 	"method": "GET",
@@ -191,7 +192,18 @@ fetch("https://mlb-data.p.rapidapi.com/json/named.roster_40.bam?team_id='108'", 
 }
 document.addEventListener('DOMContentLoaded', getRoster);
 
-function sortBy(filter) {
+//show and hide cards
+function sortBy(filter) {//parameter comes from nav button clicked
+    const li = document.querySelectorAll(`.${filter}-li`);
+    const nav = document.querySelectorAll('.nav');
+    nav.forEach( item => {
+        item.classList.remove('active');
+    });
+    li.forEach( item => {
+        item.classList.add('active');
+    })
+
+
     const visibility = {
         'pitcher': {
             visible: 'pitcher',
@@ -202,7 +214,7 @@ function sortBy(filter) {
             hidden: 'pitcher'
         }
     }
-    if (filter === 'pitcher' || filter === 'position') {
+    if (filter === 'pitcher' || filter === 'position') { //if the parameter is pitcher or position, show all cards that fit the parameter, hide all the cards that don't
         const visible = document.querySelectorAll(`[data-position='${visibility[filter].visible}']`);
         const hidden = document.querySelectorAll(`[data-position='${visibility[filter].hidden}']`);
         visible.forEach( player => {
@@ -214,7 +226,7 @@ function sortBy(filter) {
             player.classList.remove('visible');
         });
     } 
-    else {
+    else {//show all cards
         const pitchers = document.querySelectorAll(`[data-position='pitcher']`);
         const position = document.querySelectorAll(`[data-position='position']`);
         pitchers.forEach( player => {
@@ -227,3 +239,20 @@ function sortBy(filter) {
         });
     }
 }
+
+
+let menuOpen = false;
+function hamburgerMenu() {
+    const menuBtn = document.querySelector('.menu-btn');
+    const hamburgerMenu = document.querySelector('.hamburger-menu');
+    if(!menuOpen) {
+        menuBtn.classList.add('open');
+        menuOpen = true;
+        hamburgerMenu.classList.remove('closed');
+    } else {
+        menuBtn.classList.remove('open');
+        menuOpen = false;
+        hamburgerMenu.classList.add('closed');
+    }
+}
+document.querySelector('.menu-btn').addEventListener('click', hamburgerMenu);
