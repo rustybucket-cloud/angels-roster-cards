@@ -33,6 +33,7 @@ fetch("https://mlb-data.p.rapidapi.com/json/named.roster_40.bam?team_id='108'", 
 
             const img = document.createElement('img');
             img.setAttribute('src', photo);
+            img.setAttribute('loading', 'lazy');
             front.append(img);
 
             const positionP = document.createElement('p');
