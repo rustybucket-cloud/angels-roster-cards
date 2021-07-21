@@ -15,18 +15,85 @@ header {
 }
 h1 {
     font-family: "Bree Serif", sans-serif;
-    padding: 2vw
+    padding: 2vw;
+    margin: 0;
 }
 
 /*card styling*/
-.card {
+#cards {
+    display: grid;
+    justify-content: space-between;
     width: 100%;
-    height: 100%;
+}
+#cards h3{
+    font-size: 1rem;
+    margin: 0 auto;
+    padding: 0;
+}
+#cards p {
+    font-size: 1rem;
+}
+#cards img {
+    margin: 0 auto;
+    padding: 0;
+    width: 150px;
+    height: auto;
+}
+.card {
+    width: 10rem;
+    height: 15rem;
+    margin: 1vw auto;
     transition: transform 1s;
-  transform-style: preserve-3d;
+    transform-style: preserve-3d;
     cursor: pointer;
     position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
+
+@media screen and (min-width: 893px) {
+    #cards {
+        grid-template-columns: repeat(5, 1fr);
+    }
+}
+@media screen and (max-width: 892px) {
+    #cards {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+@media screen and (max-width: 701px) {
+    #cards {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+@media screen and (max-width: 535px) {
+    .card {
+        width: 8rem;
+        height: 12rem;
+    }
+    #cards img {
+        width: 110px;
+    }
+}
+@media screen and (max-width: 400px) {
+    #cards {
+        grid-template-columns: repeat(2, 1fr);
+        justify-content: space-evenly;
+    }
+    .card {
+        width: 8rem;
+        height: 12rem;
+    }
+    #cards img {
+        width: 110px; 
+    }
+}
+/*#cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}*/
   
 .card.is-flipped {
   transform: rotateY(180deg);
@@ -34,10 +101,13 @@ h1 {
   
   .card__face {
     position: absolute;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
     width: 100%;
     height: 100%;
-    line-height: 260px;
-    color: white;
+    /*line-height: 260px;*/
+    
     text-align: center;
     font-weight: bold;
     font-size: 40px;
@@ -45,10 +115,47 @@ h1 {
   }
   
   .card__face--front {
-    background: red;
+    background: white;
+    border: 1px solid #cd1141;
+    color: #cd1141;
   }
   
   .card__face--back {
-    background: blue;
+    background: white;
+    border: 1px solid #003263;
+    color: #003263;
     transform: rotateY(180deg);
+  }
+  
+  .card__face--back table {
+      border-spacing: 0;
+  }
+  .card__face--back th {
+      border-bottom: 1px solid #003263;
+      font-size: .9rem;
+      margin: 0;
+      padding: 2px;
+  }
+  .card__face--back td {
+      font-size: .9rem;
+      margin: 0;
+      padding: 2px;
+  }
+.pitcher th, .picther td {
+    font-size: .7rem;
+}
+  @media screen and (max-width: 530px) {
+      #cards p, #cards p {
+          font-size: .75rem;
+      }
+      .card__face--back th, .card__face--back td{
+          font-size: .75rem;
+      }
+      .pitcher th, .pitcher .td{
+        font-size: .6rem;
+      }
+  }
+  header, main, footer {
+      max-width: 64rem;
+      margin: 0 auto;
   }
