@@ -51,6 +51,19 @@ nav li {
 nav li:hover {
     background-color: #003263;
 }
+main {
+    position: relative;
+    top: 12vh;
+}
+
+@media screen and (max-width: 404px) {
+    header {
+        height: 15vh;
+    }
+    main {
+        top: 15vh;
+    }
+}
 
 /*menu button*/
 .menu-btn {
@@ -149,11 +162,6 @@ li.active {
     }
 }
 
-main {
-    position: relative;
-    top: 12vh;
-}
-
 /*card styling*/
 #cards {
     display: grid;
@@ -217,8 +225,8 @@ main {
         justify-content: space-evenly;
     }
     .card {
-        width: 8rem;
-        height: 12rem;
+        width: 9rem;
+        height: 13.5rem;
     }
     #cards img {
         width: 110px; 
@@ -278,6 +286,8 @@ main {
   }
   table {
       max-width: 100%;
+      background-color: #003263;
+      color: #fff;
   }
 .pitcher-table th, .picther-table td {
     font-size: .7rem;
@@ -289,7 +299,7 @@ main {
       .card__face--back th, .card__face--back td{
           font-size: .75rem;
       }
-      .pitcher-table th, .pitcher-table .td{
+      .pitcher-table th, .pitcher-table td{
         font-size: .6rem;
       }
   }
