@@ -21,6 +21,7 @@
                 <li onclick="sortBy('pitcher')" class='pitcher-li nav'>Pitchers</li>
                 <li onclick="sortBy('position')" class="position-li nav">Position Players</li>
                 <li onclick="sortBy('all')" class="active all-li nav">All</li>
+                <li onclick="showAddPlayer()" class="nav">Add Player</li>
             </ul>
         </nav>
         <div class="menu-btn">
@@ -33,7 +34,88 @@
                 <li onclick="sortBy('pitcher')" class='nav pitcher-li'>Pitchers</li>
                 <li onclick="sortBy('position')" class="nav position-li">Position Players</li>
                 <li onclick="sortBy('all')" class="active nav all-li">All</li>
+                <li onclick="showAddPlayer()" class = "nav">Add Player</li>
             </ul>
+        </div>
+        <div class="add-player hidden">
+            <div class="x-button"></div>
+            <h2>Add Player</h2>
+            <form id="new-form">
+                <label for="player-name">
+                    Name:
+                    <input type="text" id="player-name">
+                </label>
+                <label for="player-position">
+                    Position:
+                    <select id="player-position">
+                        <option value="C">C</option>
+                        <option value="1B">1B</option>
+                        <option value="2B">2B</option>
+                        <option value="SS">SS</option>
+                        <option value="3B">3B</option>
+                        <option value="RF">RF</option>
+                        <option value="CF">CF</option>
+                        <option value="LF">LF</option>
+                        <option value="DH">DH</option>
+                        <option value="P">P</option>
+                    </select>
+                </label>
+                <label for="player-img">
+                    Image URL:
+                    <input type="url" id="player-img">
+                </label>
+                <label for="height" class="together">
+                    Feet:
+                    <input type="number" id="feet">
+                    Inches: 
+                    <input type="number" id="inches">
+                </label>
+                <label for="weight">
+                    Weight:
+                    <input type="number" id="weight">
+                </label>
+                <label for="bats">
+                    Bats:
+                    <select id="bats">
+                        <option value="R">R</option>
+                        <option value="L">L</option>
+                    </select>
+                </label>
+                <label for="throws">
+                    Throws:
+                    <select id="throws">
+                        <option value="R">R</option>
+                        <option value="L">L</option>
+                    </select>
+                </label>
+                <table id="new-player-stats">
+                    <tr>
+                        <th>G</th>
+                        <th>AVG</th>
+                        <th>H</th>
+                        <th>HR</th>
+                        <th>SLG</th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="number" id="g">
+                        </td>
+                        <td>
+                            <input type="number" id="avg">
+                        </td>
+                        <td>
+                            <input type="number" id="h">
+                        </td>
+                        <td>
+                            <input type="number" id="hr">
+                        </td>
+                        <td>
+                            <input type="number" id="slg">
+                        </td>
+                    </tr>
+                </table>
+                <button id="add-player-button" type="button">Add Player</button>
+            </form>
         </div>
         <div id="cards">
         </div>
