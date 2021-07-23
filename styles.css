@@ -167,6 +167,7 @@ li.active {
     display: grid;
     justify-content: space-between;
     width: 100%;
+    overflow: hidden;
 }
 #cards h3{
     font-size: 1rem;
@@ -240,9 +241,11 @@ li.active {
   
 .card.is-flipped {
   transform: rotateY(180deg);
+  -webkit-transform: rotateY(180deg);
 }
   
   .card__face {
+    -webkit-transform: translate3d(0, 0, 0);
     position: absolute;
     display: flex;
     align-items: center;
