@@ -261,6 +261,7 @@ document.querySelector('.menu-btn').addEventListener('click', hamburgerMenu);
 
 function showAddPlayer() {
     document.querySelector('.add-player').classList.toggle('hidden');
+    document.querySelector('.hamburger-menu').classList.toggle('hidden');
 }
 document.querySelector('.x-button').addEventListener('click', showAddPlayer);
 
