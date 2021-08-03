@@ -11,79 +11,44 @@ fetch("https://mlb-data.p.rapidapi.com/json/named.roster_40.bam?team_id='108'", 
     .then(data => {
         
         data.roster_40.queryResults.row.forEach( player => {
+
+            
             const id = player.player_id;
-            const player_name = player.name_display_first_last;
             const position = player.position_txt;
             const photo = `https://img.mlbstatic.com/mlb-photos/image/upload/d_people:generic:headshot:silo:current.png/r_max/w_180,q_auto:best/v1/people/${player.player_id}/headshot/silo/current`;
-            const height = `${player.height_feet}'${player.height_inches}"`;
-            const hands = `Bats: ${player.bats} Throws: ${player.throws}`;
-            const weight = player.weight;
 
+            //creates the card
             const card = document.createElement('div');
             card.classList.add('card');
             card.id = id;
 
+            //creates the front side of the card
             const front = document.createElement('div');
             front.classList.add('card__face');
             front.classList.add('card__face--front');
-            
 
-            const playerName = document.createElement('h3');
-            const playerNameTxt = document.createTextNode(player_name);
-            playerName.append(playerNameTxt);
-            front.append(playerName);
+            const frontHTML = `
+                <h3>${player.name_display_first_last}</h3>
+                <img src="${photo}" height="180" width="180" loading="lazy">
+                <p>${position}</p>
+            `;
+            front.innerHTML = frontHTML;
 
-            const img = document.createElement('img');
-            img.setAttribute('src', photo);
-            img.setAttribute('loading', 'lazy');
-            img.setAttribute("height", "180");
-            img.setAttribute("width", "180");
-            front.append(img);
-
-            const positionP = document.createElement('p');
-            const positionTxt = document.createTextNode(position);
-            positionP.append(positionTxt);
-            front.append(positionP);
-
+            //creates the back side of the card
             const back = document.createElement('div');
             back.classList.add('card__face');
             back.classList.add('card__face--back');
 
-            const handsP = document.createElement('p');
-            const handsTxt = document.createTextNode(hands);
-            handsP.append(handsTxt);
-            back.append(handsP);
-            
-            const heightP = document.createElement('p');
-            const heightTxt = document.createTextNode(`${height} ${weight}lb`);
-            heightP.append(heightTxt);
-            back.append(heightP);
-
-
-            const carStatsP = document.createElement('p');
-            const carStatsTxt = document.createTextNode('Career Stats:');
-            carStatsP.append(carStatsTxt);
-            back.append(carStatsP);
+            const backHTML = `
+                <p>Bats: ${player.bats} Throws: ${player.throws}</p>
+                <p>${player.height_feet}'${player.height_inches}" ${player.weight}lb</p>
+                <p>Career Stats:</p>
+            `;
+            back.innerHTML = backHTML;
 
             const table = document.createElement('table');
-            const headTr = document.createElement('tr');
             if (position !== 'P') {//if player is not a pitcher, fill the table head with these headers
-
                 card.setAttribute('data-position', 'position');
-
-                const gTh = document.createElement('th');
-                gTh.textContent = "G";
-                const avgTh = document.createElement('th');
-                avgTh.textContent = "AVG";
-                const hTh = document.createElement('th');
-                hTh.innerText = "H";
-                const hrTh = document.createElement('th');
-                hrTh.innerText = "HR";
-                const slgTh = document.createElement('th');
-                slgTh.innerText = "SLG";
-                headTr.append(gTh, avgTh, hTh, hrTh, slgTh);
-                table.append(headTr);
-
                 //fetch career hitting data and post it to table
                 fetch(`https://mlb-data.p.rapidapi.com/json/named.sport_career_hitting.bam?player_id='${id}'&game_type='R'&league_list_id='mlb'`, {
                 "method": "GET",
@@ -95,26 +60,26 @@ fetch("https://mlb-data.p.rapidapi.com/json/named.roster_40.bam?team_id='108'", 
                         .then(response => response.json())
                         .then(data => {
                             const statList = data.sport_career_hitting.queryResults.row;
-                            const g = statList.g;
-                            const avg = statList.avg;
-                            const h = statList.h;
-                            const hr = statList.hr;
-                            const slg = statList.slg;
-                            
-
-                            const tr = document.createElement('tr');
-                            const gTd = document.createElement('td');
-                            gTd.textContent = g;
-                            const avgTd = document.createElement('td');
-                            avgTd.textContent = avg;
-                            const hTd = document.createElement('td');
-                            hTd.innerText = h;
-                            const hrTd = document.createElement('td');
-                            hrTd.innerText = hr;
-                            const slgTd = document.createElement('td');
-                            slgTd.innerText = slg;
-                            tr.append(gTd, avgTd, hTd, hrTd, slgTd);
-                            table.append(tr);
+                        
+                            const tableHTML = `
+                                <table>
+                                    <tr>
+                                        <th>G</th>
+                                        <th>AVG</th>
+                                        <th>H</th>
+                                        <th>HR</th>
+                                        <th>SLG</th>
+                                    </tr>
+                                    <tr>
+                                        <td>${statList.g}</td>
+                                        <td>${statList.avg}</td>
+                                        <td>${statList.h}</td>
+                                        <td>${statList.hr}</td>
+                                        <td>${statList.slg}</td>
+                                    </tr>
+                                </table>
+                            `;
+                            table.innerHTML = tableHTML;
                         })
                         .catch(err => {
                             console.error(err);
@@ -123,19 +88,6 @@ fetch("https://mlb-data.p.rapidapi.com/json/named.roster_40.bam?team_id='108'", 
                         else {//create a table for pitchers
                             card.setAttribute('data-position', 'pitcher');
                             table.classList.add('pitcher-table');
-
-                            const rTh = document.createElement('th');
-                            rTh.textContent = "W-L";
-                            const ipTh = document.createElement('th');
-                            ipTh.textContent = "IP";
-                            const eraTh = document.createElement('th');
-                            eraTh.innerText = "ERA";
-                            const soTh = document.createElement('th');
-                            soTh.innerText = "SO";
-                            const whipTh = document.createElement('th');
-                            whipTh.innerText = "WHIP";
-                            headTr.append(rTh, ipTh, eraTh, soTh, whipTh);
-                            table.append(headTr);
                         
                             //fetch career hitting data and post it to table
                             fetch(`https://mlb-data.p.rapidapi.com/json/named.sport_career_pitching.bam?player_id='${id}'&league_list_id='mlb'&game_type='R'`, {
@@ -147,27 +99,28 @@ fetch("https://mlb-data.p.rapidapi.com/json/named.roster_40.bam?team_id='108'", 
                                 })
                                     .then(response => response.json())
                                     .then(data => {
+
                                         const statList = data.sport_career_pitching.queryResults.row;
-                                        const r = `${statList.w}-${statList.l}`;
-                                        const ip = statList.ip;
-                                        const era = statList.era;
-                                        const so = statList.so;
-                                        const whip = statList.whip;
-                                        
-            
-                                        const tr = document.createElement('tr');
-                                        const rTd = document.createElement('td');
-                                        rTd.textContent = r;
-                                        const ipTd = document.createElement('td');
-                                        ipTd.textContent = ip;
-                                        const eraTd = document.createElement('td');
-                                        eraTd.innerText = era;
-                                        const soTd = document.createElement('td');
-                                        soTd.innerText = so;
-                                        const whipTd = document.createElement('td');
-                                        whipTd.innerText = whip;
-                                        tr.append(rTd, ipTd, eraTd, soTd, whipTd);
-                                        table.append(tr);
+                                        const tableHTML = `
+                                            <table>
+                                                <tr>
+                                                    <th>R</th>
+                                                    <th>IP</th>
+                                                    <th>ERA</th>
+                                                    <th>SO</th>
+                                                    <th>WHIP</th>
+                                                </tr>
+                                                <tr>
+                                                    <td>${statList.w}-${statList.l}</td>
+                                                    <td>${statList.ip}</td>
+                                                    <td>${statList.era}</td>
+                                                    <td>${statList.so}</td>
+                                                    <td>${statList.whip}</td>
+                                                </tr>
+                                            </table>
+                                        `;
+                                        table.innerHTML = tableHTML;
+
                                     })
                                     .catch(err => {
                                         console.error(err);
@@ -193,6 +146,7 @@ fetch("https://mlb-data.p.rapidapi.com/json/named.roster_40.bam?team_id='108'", 
     });
 }
 document.addEventListener('DOMContentLoaded', getRoster);
+
 
 //show and hide cards
 function sortBy(filter) {//parameter comes from nav button clicked
@@ -242,7 +196,7 @@ function sortBy(filter) {//parameter comes from nav button clicked
     }
 }
 
-
+//script for the hamburger menu
 let menuOpen = false;
 function hamburgerMenu() {
     const menuBtn = document.querySelector('.menu-btn');
@@ -259,106 +213,83 @@ function hamburgerMenu() {
 }
 document.querySelector('.menu-btn').addEventListener('click', hamburgerMenu);
 
+//shows the add player option
 function showAddPlayer() {
     document.querySelector('.add-player').classList.toggle('hidden');
-    document.querySelector('.hamburger-menu').classList.toggle('hidden');
+    const hamburgerMenu = document.querySelector('.hamburger-menu');
+    //hides nav menu when app player is opened
+    if (!hamburgerMenu.classList.contains('closed')) {
+        hamburgerMenu.classList.toggle('closed');
+        document.querySelector('.menu-btn').classList.remove('open');
+        menuOpen = false;
+    }
+    
 }
 document.querySelector('.x-button').addEventListener('click', showAddPlayer);
 
+//creates a new player
 function newPlayer() {
     const div = document.querySelector('#cards');
     //get input values
-    const name = document.querySelector('#player-name').value;
     const position = document.querySelector('#player-position').value;
     const photo = document.querySelector('#player-img').value;
-    const bats = document.querySelector('#bats').value;
-    const throws = document.querySelector('#throws').value;
-    const height = `${document.querySelector('#feet').value}'${document.querySelector('#inches').value}"`;
-    const weight = document.querySelector('#weight').value
 
     const statsArr = [document.querySelector('#g').value, document.querySelector('#avg').value, document.querySelector('#h').value, document.querySelector('#hr').value, document.querySelector('#slg').value];
 
-    //create card front 
+    //creates the card
     const card = document.createElement('div');
     card.classList.add('card');
 
+    //creates the front side of the card
     const front = document.createElement('div');
     front.classList.add('card__face');
     front.classList.add('card__face--front');
-            
 
-    const playerName = document.createElement('h3');
-    const playerNameTxt = document.createTextNode(name);
-    playerName.append(playerNameTxt);
-    front.append(playerName);
+    const frontHTML = `
+        <h3>${document.querySelector('#player-name').value}</h3>
+        <img src="${photo}" height="180" width="180" loading="lazy">
+        <p>${position}</p>
+    `;
+    front.innerHTML = frontHTML;
 
-    const img = document.createElement('img');
-    img.setAttribute('src', photo);
-    img.setAttribute('loading', 'lazy');
-    img.setAttribute("height", "180");
-    img.setAttribute("width", "180");
-    front.append(img);
-
-    const positionP = document.createElement('p');
-    const positionTxt = document.createTextNode(position);
-    positionP.append(positionTxt);
-    front.append(positionP);
-
+    //creates the back side of the card
     const back = document.createElement('div');
     back.classList.add('card__face');
     back.classList.add('card__face--back');
 
-    const handsP = document.createElement('p');
-    const handsTxt = document.createTextNode(`Bats: ${bats} Throws: ${throws}`);
-    handsP.append(handsTxt);
-    back.append(handsP);
-            
-    const heightP = document.createElement('p');
-    const heightTxt = document.createTextNode(`${height} ${weight}lb`);
-    heightP.append(heightTxt);
-    back.append(heightP);
-
-
-    const carStatsP = document.createElement('p');
-    const carStatsTxt = document.createTextNode('Career Stats:');
-    carStatsP.append(carStatsTxt);
-    back.append(carStatsP);
+    const backHTML = `
+        <p>Bats: ${document.querySelector('#bats').value} Throws: ${document.querySelector('#throws').value}</p>
+        <p>${document.querySelector('#feet').value}'${document.querySelector('#inches').value}" ${document.querySelector('#weight').value}lb</p>
+        <p>Career Stats:</p>
+    `;
+    back.innerHTML = backHTML;
 
     const table = document.createElement('table');
-    const headTr = document.createElement('tr');
-
             if (position !== 'P') {//if player is not a pitcher, fill the table head with these headers
 
                 const [g, avg, h, hr, slg] = statsArr;
 
                 card.setAttribute('data-position', 'position');
 
-                const gTh = document.createElement('th');
-                gTh.textContent = "G";
-                const avgTh = document.createElement('th');
-                avgTh.textContent = "AVG";
-                const hTh = document.createElement('th');
-                hTh.innerText = "H";
-                const hrTh = document.createElement('th');
-                hrTh.innerText = "HR";
-                const slgTh = document.createElement('th');
-                slgTh.innerText = "SLG";
-                headTr.append(gTh, avgTh, hTh, hrTh, slgTh);
-                table.append(headTr);
-
-                const tr = document.createElement('tr');
-                const gTd = document.createElement('td');
-                gTd.textContent = g;
-                const avgTd = document.createElement('td');
-                avgTd.textContent = avg;
-                const hTd = document.createElement('td');
-                hTd.innerText = h;
-                const hrTd = document.createElement('td');
-                hrTd.innerText = hr;
-                const slgTd = document.createElement('td');
-                slgTd.innerText = slg;
-                tr.append(gTd, avgTd, hTd, hrTd, slgTd);
-                table.append(tr);
+                const tableHTML = `
+                    <table>
+                        <tr>
+                            <th>G</th>
+                            <th>AVG</th>
+                            <th>H</th>
+                            <th>HR</th>
+                            <th>SLG</th>
+                        </tr>
+                        <tr>
+                            <td>${g}</td>
+                            <td>${avg}</td>
+                            <td>${h}</td>
+                            <td>${hr}</td>
+                            <td>${slg}</td>
+                        </tr>
+                    </table>
+                `;
+                table.innerHTML = tableHTML;
             }
             else {
                 card.setAttribute('data-position', 'pitcher');
@@ -366,32 +297,25 @@ function newPlayer() {
 
                 const [r, ip, era, so, whip] = statsArr;
 
-                const rTh = document.createElement('th');
-                rTh.textContent = "W-L";                            
-                const ipTh = document.createElement('th');
-                ipTh.textContent = "IP";
-                const eraTh = document.createElement('th');
-                eraTh.innerText = "ERA";
-                const soTh = document.createElement('th');
-                soTh.innerText = "SO";
-                const whipTh = document.createElement('th');
-                whipTh.innerText = "WHIP";
-                headTr.append(rTh, ipTh, eraTh, soTh, whipTh);
-                table.append(headTr);
-
-                const tr = document.createElement('tr');
-                const rTd = document.createElement('td');
-                rTd.textContent = r;
-                const ipTd = document.createElement('td');
-                ipTd.textContent = ip;
-                const eraTd = document.createElement('td');
-                eraTd.innerText = era;
-                const soTd = document.createElement('td');
-                soTd.innerText = so;
-                const whipTd = document.createElement('td');
-                whipTd.innerText = whip;
-                tr.append(rTd, ipTd, eraTd, soTd, whipTd);
-                table.append(tr);
+                const tableHTML = `
+                    <table>
+                        <tr>
+                            <th>R</th>
+                            <th>IP</th>
+                            <th>ERA</th>
+                            <th>SO</th>
+                            <th>WHIP</th>
+                        </tr>
+                        <tr>
+                            <td>${r}</td>
+                            <td>${ip}</td>
+                            <td>${era}</td>
+                            <td>${so}</td>
+                            <td>${whip}</td>
+                        </tr>
+                    </table>
+                `;
+                table.innerHTML = tableHTML;
             }
 
             back.append(table);
